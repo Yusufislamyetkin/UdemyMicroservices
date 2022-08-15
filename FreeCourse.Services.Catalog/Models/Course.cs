@@ -3,7 +3,7 @@ using System;
 
 namespace FreeCourse.Services.Catalog.Models
 {
-    internal class Course
+    public class Course
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]

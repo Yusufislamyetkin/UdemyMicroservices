@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Catalog.Services
 {
-    internal class CourseService: ICourseService
+    public class CourseService: ICourseService
     {
 
         public readonly IMongoCollection<Course> _courseCollection;
@@ -18,14 +18,13 @@ namespace FreeCourse.Services.Catalog.Services
 
         private readonly IMapper _mapper;
 
-        public CourseService(IMongoCollection<Course> courseCollection, IMongoCollection<Category> categoryCollection, IMapper mapper, IDatabaseSettings databaseSettings)
+        public CourseService(IMapper mapper, IDatabaseSettings databaseSettings)
         {
             var client = new MongoClient(databaseSettings.ConnectionString);
             var database = client.GetDatabase(databaseSettings.DatabaseName);
 
             _courseCollection = database.GetCollection<Course>(databaseSettings.CourseCollectionName);
             _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
-            _courseCollection = courseCollection;
             _mapper = mapper;
         }
 
