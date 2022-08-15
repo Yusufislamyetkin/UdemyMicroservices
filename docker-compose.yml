@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  freecourse.identityserver:
+    image: ${DOCKER_REGISTRY-}freecourseidentityserver
+    build:
+      context: .
+      dockerfile: FreeCourse.IdentityServer/Dockerfile

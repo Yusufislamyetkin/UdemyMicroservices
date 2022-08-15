@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+
+
+  freecourse.ýdentityserver:
+    container_name: ýdentityserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+      - "ConnectionStrings:DefaultConnection=Server=IdentitySqlDb,1433;Database=IdentitySqlDb; User=sa; Password=Password12*"
+    ports:
+      - "8000:80"
+    volumes:
+      - ${HOME}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
+
+  freecourse.services.catalog:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionString=mongodb://CatalogMongodb:27017"
+    ports:
+      - "8002:80"
+
+
+  CatalogMongodb:
+    container_name: CatalogMongodb
+    restart: always
+    volumes:
+       - ${WEBAPP_STORAGE_HOME}/site:/data/db
+    ports:
+       - "27017:27017"
+
+
+  IdentitySqlDb:
+    container_name: IdentitySqlDb
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password12*
+
+  
+  
