@@ -41,6 +41,7 @@ namespace FreeCourse.IdentityServer
 
             try
             {
+                // İlk açılışta migration işlemi yapılır.
                 var host = CreateHostBuilder(args).Build();
 
                 using (var scope = host.Services.CreateScope())

@@ -1,5 +1,6 @@
 ﻿namespace FreeCourse.Services.Catalog.Settings
 {
+    // Database bilgilerini classa aktarırız ve iç tarafta bu bilgileri kullanırız. Örnek olarak bağlantı açmak için.
     public class DatabaseSettings: IDatabaseSettings
     {
 

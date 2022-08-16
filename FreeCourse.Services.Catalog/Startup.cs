@@ -34,11 +34,14 @@ namespace FreeCourse.Services.Catalog
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddAutoMapper(typeof(Startup));
+
+            // Tüm controllera teker teker authrize eklemesi yapmak yerine burada direk ekleme yapýyoruz.
             services.AddControllers(opt =>
             {
                 opt.Filters.Add(new AuthorizeFilter());
             });
 
+            // Appsettings dosyasýndan gelen databasesetting ile bir section oluþturuyoruzç
             services.Configure<DatabaseSettings>(Configuration.GetSection("DatabaseSettings"));
 
             services.AddSingleton<IDatabaseSettings>(sp =>
@@ -51,10 +54,14 @@ namespace FreeCourse.Services.Catalog
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FreeCourse.Services.Catalog", Version = "v1" });
             });
 
+            // Jwt ile auth kontrolü saðlamak için þema oluþturuyoruz.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
+                //Appsettings dosyasýnda yer alan ýdentityserver urlsine public key denetimi yapar.
                 options.Authority = Configuration["IdentityServerUrl"];
+                // Gelen jwt içerisinde resource_catalog var mý diye check eder. Eðer varsa içeri alýr.
                 options.Audience = "resource_catalog";
+                // Https i kapatýr.
                 options.RequireHttpsMetadata = false;
 
 
@@ -63,7 +70,7 @@ namespace FreeCourse.Services.Catalog
             services.AddAuthorization();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. Use this method to configure the HTTP r1equest pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -76,6 +83,7 @@ namespace FreeCourse.Services.Catalog
             
 
             app.UseRouting();
+            // Role ve oturum ekleme.
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -21,12 +21,17 @@ namespace FreeCourse.IdentityServer
         public static IEnumerable<IdentityResource> IdentityResources =>
                    new IdentityResource[]
                    {
+                       new IdentityResources.Email(),
+                       new IdentityResources.OpenId(),
+                       new IdentityResources.Profile(),
+                       new IdentityResource(){Name = "roles",DisplayName ="Roles", Description = "Kullanıcı rolleri", UserClaims = new []{ "roles"} }
 
                    };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
+                // Burada write read full permission gibi eklemeler yapılır. Bu scopelara göre erişim sağlar clientler.
                 new ApiScope("catalog_fullpermission","Catalog API için full erişim"),
                 new ApiScope("catalog_write","Catalog API için full erişim"),
                 new ApiScope("catalog_read","Catalog API için full erişim"),
@@ -43,6 +48,7 @@ namespace FreeCourse.IdentityServer
             {
               new Client
               {
+                  // Client oluşturduk ve bu clientin şifresini granttypesini ıd sini ve izinlerini belirttik.
                   ClientName = "Asp.Net Core MVC",
                   ClientId = "WebMvcClient",
                   ClientSecrets={new Secret("secret".Sha256())},
