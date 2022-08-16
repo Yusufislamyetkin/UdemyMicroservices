@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using static IdentityServer4.IdentityServerConstants;
@@ -24,7 +25,7 @@ namespace FreeCourse.IdentityServer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Signup( SignupDto signupDto)
+        public async Task<IActionResult> Signup(SignupDto signupDto)
         {
             var user = new ApplicationUser
             {
@@ -33,12 +34,24 @@ namespace FreeCourse.IdentityServer.Controllers
                 City = signupDto.City
             };
 
-            var result = await _userManager.CreateAsync(user,signupDto.Password);
+            var result = await _userManager.CreateAsync(user, signupDto.Password);
             if (!result.Succeeded)
             {
                 return BadRequest(Response<NoContent>.Fail(result.Errors.Select(x => x.Description).ToList(), 400));
             }
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUser()
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
+
+            if (userIdClaim == null) return BadRequest();
+
+            var user = await _userManager.FindByIdAsync(userIdClaim.Value);
+
+            return Ok(new { Id = user.Id, UserName = user.UserName, Email = user.Email, City = user.City });
         }
     }
 }
