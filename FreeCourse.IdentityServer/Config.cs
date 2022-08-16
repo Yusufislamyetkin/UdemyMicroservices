@@ -47,22 +47,27 @@ namespace FreeCourse.IdentityServer
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
-              new Client
-              {
-                  // Client oluşturduk ve bu clientin şifresini granttypesini ıd sini ve izinlerini belirttik.
-                  ClientName = "Asp.Net Core MVC",
-                  ClientId = "WebMvcClient",
-                  AllowOfflineAccess = true,
-                  ClientSecrets={new Secret("secret".Sha256())},
-                  AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                  AllowedScopes= {IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile,
-                  IdentityServerConstants.StandardScopes.OfflineAccess,IdentityServerConstants.LocalApi.ScopeName,"roles"},
-                  AccessTokenLifetime = 1 * 60 * 60,
-                  RefreshTokenExpiration = TokenExpiration.Absolute,
-                  AbsoluteRefreshTokenLifetime = (int)(DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,
-                  RefreshTokenUsage = TokenUsage.ReUse
-                  
-              }
+                new Client
+                {
+                   ClientName="Asp.Net Core MVC",
+                    ClientId="WebMvcClient",
+                    ClientSecrets= {new Secret("secret".Sha256())},
+                    AllowedGrantTypes= GrantTypes.ClientCredentials,
+                    AllowedScopes={ "catalog_fullpermission","photo_stock_fullpermission", "gateway_fullpermission", IdentityServerConstants.LocalApi.ScopeName }
+                },
+                new Client
+                {
+                   ClientName="Asp.Net Core MVC",
+                    ClientId="WebMvcClientForUser",
+                    AllowOfflineAccess=true,
+                    ClientSecrets= {new Secret("secret".Sha256())},
+                    AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
+                    AllowedScopes={ "basket_fullpermission", "order_fullpermission", "gateway_fullpermission", "discount_fullpermission", "payment_fullpermission", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName,"roles" },
+                    AccessTokenLifetime=1*60*60,
+                    RefreshTokenExpiration=TokenExpiration.Absolute,
+                    AbsoluteRefreshTokenLifetime= (int) (DateTime.Now.AddDays(60)- DateTime.Now).TotalSeconds,
+                    RefreshTokenUsage= TokenUsage.ReUse
+                }
             };
     }
 }
