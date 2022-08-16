@@ -24,7 +24,7 @@ namespace FreeCourse.IdentityServer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Signup(SignupDto signupDto)
+        public async Task<IActionResult> Signup( SignupDto signupDto)
         {
             var user = new ApplicationUser
             {
