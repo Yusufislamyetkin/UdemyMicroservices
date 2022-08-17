@@ -42,8 +42,8 @@ namespace FreeCourse.Services.PhotoStock
             {
                 //Appsettings dosyasýnda yer alan ýdentityserver urlsine public key denetimi yapar.
                 options.Authority = Configuration["IdentityServerUrl"];
-                // Gelen jwt içerisinde resource_catalog var mý diye check eder. Eðer varsa içeri alýr.
-                options.Audience = "photo_stock_catalog";
+                // Gelen jwt içerisinde resource_photo_stock var mý diye check eder. Eðer varsa içeri alýr.
+                options.Audience = "resource_photo_stock";
                 // Https i kapatýr.
                 options.RequireHttpsMetadata = false;
 

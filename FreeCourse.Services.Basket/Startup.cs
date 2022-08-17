@@ -39,8 +39,8 @@ namespace FreeCourse.Services.Basket
             {
                 //Appsettings dosyasýnda yer alan ýdentityserver urlsine public key denetimi yapar.
                 options.Authority = Configuration["IdentityServerUrl"];
-                // Gelen jwt içerisinde resource_catalog var mý diye check eder. Eðer varsa içeri alýr.
-                options.Audience = "resource_catalog";
+                // Gelen jwt içerisinde resource_basket var mý diye check eder. Eðer varsa içeri alýr.
+                options.Audience = "resource_basket";
                 // Https i kapatýr.
                 options.RequireHttpsMetadata = false;
 
@@ -89,7 +89,7 @@ namespace FreeCourse.Services.Basket
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
