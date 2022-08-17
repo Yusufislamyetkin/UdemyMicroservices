@@ -52,7 +52,9 @@ namespace FreeCourse.Services.Basket
 
             });
 
-
+            // Bunun sayesinde aldýðýmýz ve iþlemlerde kullandýðýmýz jwt tokený shared class librarysine gönderebileceðiz ve oradan userýn ýdsýný ve diðer verilerini çekebileceðiz.
+            // Bunu istersek iç yapýmýzda istersek buradan çekebiliriz. Her apý'mýz için ayrý ayrý almak yerine shareda bir kere yazmak ve her apý için ordan çekmek daha kolay geldiði için
+            // bu yöntem tercih edilmiþtir.
             services.AddHttpContextAccessor();
 
             // ISharedIdentityService ile jwtde de kullanýlan sub yaný userýd kýsmýný almak için bu serviceyi kullanýyoruz.

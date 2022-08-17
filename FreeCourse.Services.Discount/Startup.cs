@@ -1,3 +1,5 @@
+using FreeCourse.Services.Discount.Service;
+using FreeCourse.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +31,16 @@ namespace FreeCourse.Services.Discount
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Bunun sayesinde aldýðýmýz ve iþlemlerde kullandýðýmýz jwt tokený shared class librarysine gönderebileceðiz ve oradan userýn ýdsýný ve diðer verilerini çekebileceðiz.
+            // Bunu istersek iç yapýmýzda istersek buradan çekebiliriz. Her apý'mýz için ayrý ayrý almak yerine shareda bir kere yazmak ve her apý için ordan çekmek daha kolay geldiði için
+            // bu yöntem tercih edilmiþtir.
+            services.AddHttpContextAccessor();
+
+            // ISharedIdentityService ile jwtde de kullanýlan sub yaný userýd kýsmýný almak için bu serviceyi kullanýyoruz.
+            services.AddScoped<ISharedIdentityService, SharedIdentityService>();
+
+            services.AddScoped<IDiscountService, DiscountService>();
 
             //Gelen istekte kesinlikle user bilgileri olacak diyerek bir policy inþa ediyoruz.
             var requreAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
