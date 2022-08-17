@@ -64,7 +64,7 @@ namespace FreeCourse.Services.Discount.Service
         public async Task<Response<NoContent>> Save(Models.Discount discount)
         {
             //Burada kullandığımız gibi parametrelere teker teker değer vermek yerine direkt olarak modelimizi de dapper'a verebiliriz.
-            var saveStatus = await _dbConnection.ExecuteAsync("Insert ınto discount (userid,rate,code) VALUES (@UserId,@Rate,@Code)", discount);
+            var saveStatus = await _dbConnection.ExecuteAsync("INSERT INTO discount (userid,rate,code) VALUES(@UserId,@Rate,@Code)", discount);
             if (saveStatus > 0)
             {
                 return Response<NoContent>.Success(204);
