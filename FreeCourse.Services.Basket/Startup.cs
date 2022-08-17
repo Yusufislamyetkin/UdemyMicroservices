@@ -1,9 +1,12 @@
 using FreeCourse.Services.Basket.Service;
 using FreeCourse.Services.Basket.Settings;
 using FreeCourse.Shared.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,12 +29,33 @@ namespace FreeCourse.Services.Basket
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+    
         public void ConfigureServices(IServiceCollection services)
         {
+            //Gelen istekte kesinlikle user bilgileri olacak diyerek bir policy inþa ediyoruz.
+            var requreAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                //Appsettings dosyasýnda yer alan ýdentityserver urlsine public key denetimi yapar.
+                options.Authority = Configuration["IdentityServerUrl"];
+                // Gelen jwt içerisinde resource_catalog var mý diye check eder. Eðer varsa içeri alýr.
+                options.Audience = "resource_catalog";
+                // Https i kapatýr.
+                options.RequireHttpsMetadata = false;
+
+
+
+            });
+
+
             services.AddHttpContextAccessor();
+
+            // ISharedIdentityService ile jwtde de kullanýlan sub yaný userýd kýsmýný almak için bu serviceyi kullanýyoruz.
             services.AddScoped<ISharedIdentityService, SharedIdentityService>();
+
             services.AddScoped<IBasketService, BasketService>();
+
             services.Configure<RedisSettings>(Configuration.GetSection("RedisSettings"));
             services.AddSingleton<RedisService>(sp =>
             {
@@ -40,7 +64,14 @@ namespace FreeCourse.Services.Basket
                 return redis;
             });
 
-            services.AddControllers();
+     
+            services.AddAuthorization();
+
+            // Oluþturduðumuz policy'i burada filter olarak ekliyoruz.
+            services.AddControllers(opt =>
+            {
+                opt.Filters.Add(new AuthorizeFilter(requreAuthorizePolicy));
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FreeCourse.Services.Basket", Version = "v1" });

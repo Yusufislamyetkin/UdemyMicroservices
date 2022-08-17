@@ -7,8 +7,9 @@ namespace FreeCourse.Services.Basket.Service
 {
     public class BasketService : IBasketService
     {
+        // Redis service ile redis service classında oluşturduğumuz getdb metodunu kullanabilir oluyoruz. Get Db ile redis üzerinde crud operasyonları yapabilir hale geliyoruz.
         private readonly RedisService _redisService;
-
+        
         public BasketService(RedisService redisService)
         {
             _redisService = redisService;

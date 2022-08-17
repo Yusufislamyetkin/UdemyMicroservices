@@ -2,6 +2,7 @@
 
 namespace FreeCourse.Services.Basket.Service
 {
+    // Appsettings dosyasındaki redis host ve port verilerini burada kullanarak bağlantıyı kuruyoruz ve temel crud operasyonlarını yönetilebilir kılıyoruz.
     public class RedisService
     {
         private readonly string _host;
