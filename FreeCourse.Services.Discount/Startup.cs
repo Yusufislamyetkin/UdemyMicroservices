@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,7 +30,29 @@ namespace FreeCourse.Services.Discount
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            //Gelen istekte kesinlikle user bilgileri olacak diyerek bir policy inþa ediyoruz.
+            var requreAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+            // sub olan ýdnýn ismini deðiþtirmesini engeller.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                //Appsettings dosyasýnda yer alan ýdentityserver urlsine public key denetimi yapar.
+                options.Authority = Configuration["IdentityServerUrl"];
+                // Gelen jwt içerisinde resource_basket var mý diye check eder. Eðer varsa içeri alýr.
+                options.Audience = "resource_discount";
+                // Https i kapatýr.
+                options.RequireHttpsMetadata = false;
+
+
+
+            });
+            // Oluþturduðumuz policy'i burada filter olarak ekliyoruz.
+            services.AddControllers(opt =>
+            {
+                opt.Filters.Add(new AuthorizeFilter(requreAuthorizePolicy));
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FreeCourse.Services.Discount", Version = "v1" });
@@ -45,6 +71,7 @@ namespace FreeCourse.Services.Discount
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

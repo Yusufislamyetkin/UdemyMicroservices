@@ -36,6 +36,7 @@ namespace FreeCourse.Services.Basket
             //Gelen istekte kesinlikle user bilgileri olacak diyerek bir policy inþa ediyoruz.
             var requreAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
+            // sub olan ýdnýn ismini deðiþtirmesini engeller.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
