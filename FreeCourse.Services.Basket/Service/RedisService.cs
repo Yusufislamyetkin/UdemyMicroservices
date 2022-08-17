@@ -6,9 +6,10 @@ namespace FreeCourse.Services.Basket.Service
     public class RedisService
     {
         private readonly string _host;
+
         private readonly int _port;
 
-        private ConnectionMultiplexer _connectionMultiplexer;
+        private ConnectionMultiplexer _ConnectionMultiplexer;
 
         public RedisService(string host, int port)
         {
@@ -16,9 +17,9 @@ namespace FreeCourse.Services.Basket.Service
             _port = port;
         }
 
-        public void Connect()=> _connectionMultiplexer = ConnectionMultiplexer.Connect($"{_host}:{_port}");
+        public void Connect() => _ConnectionMultiplexer = ConnectionMultiplexer.Connect($"{_host}:{_port}");
 
-        public IDatabase GetDb(int db = 1) => _connectionMultiplexer.GetDatabase(db);
+        public IDatabase GetDb(int db = 1) => _ConnectionMultiplexer.GetDatabase(db);
 
     }
 }
