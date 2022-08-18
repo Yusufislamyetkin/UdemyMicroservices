@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Services.Order.Domain.OrderAggregate
 {
+    
     public class OrderItem
     {
         public OrderItem(string productId, string productName, string pictureUrl, decimal price)

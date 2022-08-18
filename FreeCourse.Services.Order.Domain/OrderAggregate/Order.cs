@@ -15,11 +15,11 @@ namespace FreeCourse.Services.Order.Domain.OrderAggregate
 
     public class Order : Entity, IAggregateRoot
     {
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get;private set; }
 
         //Owned Type denir bu yapıya.
-        public Address Address { get; set; }
-        public string BuyerId { get; set; }
+        public Address Address { get;private set; }
+        public string BuyerId { get;private set; }
 
         // Private olarak belirliyoruz ki kimse direkt olarak erişemesin ve direkt olarak orderıtem ekleyemesin.Backing fields olarak isimlendirilir
         private readonly List<OrderItem> _orderItems;
