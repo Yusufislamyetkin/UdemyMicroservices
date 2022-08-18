@@ -7,3 +7,4 @@ Services
 -order API => http://localhost:5016
 
 -identity => http://localhost:5001
+-gateway => http://localhost:5000
