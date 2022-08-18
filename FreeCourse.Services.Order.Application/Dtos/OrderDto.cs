@@ -13,10 +13,10 @@ namespace FreeCourse.Services.Order.Application.Dtos
         public DateTime CreatedDate { get; set; }
 
         //Owned Type denir bu yapıya.
-        public AddressDto Address { get; set; }
+        public AddressDto AddressDto { get; set; }
         public string BuyerId { get; set; }
 
-        public List<OrderItemDto> rderItems;
+        public List<OrderItemDto> orderItems;
 
     }
 }
