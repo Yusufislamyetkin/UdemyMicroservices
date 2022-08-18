@@ -1,9 +1,12 @@
 using FreeCourse.Services.Order.Infrastructure;
 using FreeCourse.Shared.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +33,26 @@ namespace FreeCourse.Services.Order.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //Gelen istekte kesinlikle user bilgileri olacak diyerek bir policy inþa ediyoruz.
+            var requreAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+            // sub olan ýdnýn ismini deðiþtirmesini engeller.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                //Appsettings dosyasýnda yer alan ýdentityserver urlsine public key denetimi yapar.
+                options.Authority = Configuration["IdentityServerUrl"];
+                // Gelen jwt içerisinde resource_basket var mý diye check eder. Eðer varsa içeri alýr.
+                options.Audience = "resource_order";
+                // Https i kapatýr.
+                options.RequireHttpsMetadata = false;
+
+
+
+            });
+
             services.AddDbContext<OrderDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),configure =>
@@ -36,11 +60,15 @@ namespace FreeCourse.Services.Order.API
                     configure.MigrationsAssembly("FreeCourse.Services.Order.Infrastructure");
                 });
             });
-
+            services.AddAuthentication();
             services.AddHttpContextAccessor();
             services.AddMediatR(typeof(FreeCourse.Services.Order.Application.Mapping.ObjectMapper).Assembly);
             services.AddScoped<ISharedIdentityService, SharedIdentityService>();
-            services.AddControllers();
+            // Oluþturduðumuz policy'i burada filter olarak ekliyoruz.
+            services.AddControllers(opt =>
+            {
+                opt.Filters.Add(new AuthorizeFilter(requreAuthorizePolicy));
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FreeCourse.Services.Order.API", Version = "v1" });
@@ -58,7 +86,7 @@ namespace FreeCourse.Services.Order.API
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
