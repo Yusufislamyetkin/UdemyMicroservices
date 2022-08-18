@@ -24,7 +24,7 @@ namespace FreeCourse.Services.Order.Application.Handlers
 
         public Task<Response<CreatedOrderDto>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-          var newAddress = new Address(request.add)
+          var newAddress = new Address(request.OrderItems)
         }
     }
 }
