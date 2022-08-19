@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FreeCourse.Web.Services;
+using FreeCourse.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace FreeCourse.Web.Controllers
 {
     public class UserController : Controller
     {
-        public IActionResult Index()
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
         {
-            return View();
+            _userService = userService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            return View(await _userService.GetUser());
         }
     }
 }
