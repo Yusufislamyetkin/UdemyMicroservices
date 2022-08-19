@@ -9,3 +9,5 @@ Services
 -identity => http://localhost:5001
 
 -gateway => http://localhost:5000
+
+-WEB-UI => http://localhost:5010
