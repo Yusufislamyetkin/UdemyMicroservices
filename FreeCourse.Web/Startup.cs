@@ -35,7 +35,7 @@ namespace FreeCourse.Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie
                 (CookieAuthenticationDefaults.AuthenticationScheme, opts =>
                 {
-                    opts.LoginPath = "Auth/SignIn";
+                    opts.LoginPath = "/Auth/SignIn";
                     opts.ExpireTimeSpan = TimeSpan.FromDays(60);
                     opts.SlidingExpiration = true;
                     opts.Cookie.Name = "udemywebcookie";

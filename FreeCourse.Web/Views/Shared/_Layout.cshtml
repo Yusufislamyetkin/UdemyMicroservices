@@ -21,15 +21,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                      
+
                     </ul>
                     @if (User.Identity.IsAuthenticated)
                     {
-
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout"> Çıkış Yap</a>
                     }
                     else
                     {
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="SignIn" > Giriş Yap</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="SignIn"> Giriş Yap</a>
                     }
                 </div>
             </div>
