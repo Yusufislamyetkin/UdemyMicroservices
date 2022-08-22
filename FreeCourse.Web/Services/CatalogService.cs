@@ -96,7 +96,7 @@ namespace FreeCourse.Web.Services
         public async Task<bool> UpdateCourseAsync(CourseUpdateInput courseUpdateInput)
         {
 
-            var response = await _client.PutAsJsonAsync<CourseUpdateInput>("courses", courseUpdateInput);
+            var response = await _client.PutAsJsonAsync<CourseUpdateInput>("courses/Update", courseUpdateInput);
             return response.IsSuccessStatusCode;
         }
     }
