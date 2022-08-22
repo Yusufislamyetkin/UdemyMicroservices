@@ -39,7 +39,14 @@ namespace FreeCourse.Web
             var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
             services.AddHttpClient<IIdentityService, IdentityService>();
 
-            // Userservice IoC olurken. Delegate araya girerek token bilgisi gönderecek.
+            // Eðer bir catalogService' sine istek yapacaksan bu base adress üzerinden yapacaksýn diye belirtiyoruz. Delegemiz ile de adresimize giderken
+            // elimiz dolu giidyoruz. (Client ýd ve secretýmýz ile oluþturduðumuz token ile)
+            services.AddHttpClient<ICatalogService,CatalogService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Catalog.Path}");
+            });
+
+            // Userservice IoC olurken. Delegate araya girerek token bilgisi gönderecek. Buradaký url ise direkt olarak identity Serverr url'si. 
             services.AddHttpClient<IUserService, UserService>(opt =>
             {
               opt.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
