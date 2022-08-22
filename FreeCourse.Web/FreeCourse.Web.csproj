@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\photos\**" />
+    <Content Remove="wwwroot\photos\**" />
+    <EmbeddedResource Remove="wwwroot\photos\**" />
+    <None Remove="wwwroot\photos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="IdentityModel.AspNetCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.16" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.10.0" />
