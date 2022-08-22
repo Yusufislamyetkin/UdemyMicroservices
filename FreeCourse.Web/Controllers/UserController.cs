@@ -16,8 +16,9 @@ namespace FreeCourse.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // Kullanıcı bilgilerini getirir IdentityServerdan. IdentityServer'a elindeki token ile başvuruda bulunur.
             var user = await _userService.GetUser();
-            return View();
+            return View(user);
         }
     }
 }

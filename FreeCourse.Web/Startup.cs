@@ -1,3 +1,4 @@
+using FreeCourse.Web.Handler;
 using FreeCourse.Web.Models;
 using FreeCourse.Web.Services;
 using FreeCourse.Web.Services.Interfaces;
@@ -26,10 +27,10 @@ namespace FreeCourse.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
-           
-      
-           
+
+
+
+            services.AddScoped<ResourceOwnerPasswordTokenHandler>();
             services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
 
@@ -38,11 +39,12 @@ namespace FreeCourse.Web
             var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
             services.AddHttpClient<IIdentityService, IdentityService>();
 
+            // Userservice IoC olurken. Delegate araya girerek token bilgisi gönderecek.
             services.AddHttpClient<IUserService, UserService>(opt =>
             {
               opt.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
                
-            });
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
           
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie
                 (CookieAuthenticationDefaults.AuthenticationScheme, opts =>

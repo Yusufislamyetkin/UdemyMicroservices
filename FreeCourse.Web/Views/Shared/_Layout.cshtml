@@ -25,7 +25,19 @@
                     </ul>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout"> Çıkış Yap</a>
+
+                        <div class="dropdown" style="nav-right:auto">
+                            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @User.Identity.Name
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                               <a class="dropdown-item" asp-controller="User" asp-action="Index">Profil</a>
+                               <a class="dropdown-item" asp-controller="Order" asp-action="CheckoutHistory">Geçmiş</a>
+                                <a class="dropdown-item" asp-controller="Basket" asp-action="Index">Sepet</a>
+                               <a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">Çıkış</a>
+                            </div>
+                        </div>
+
                     }
                     else
                     {

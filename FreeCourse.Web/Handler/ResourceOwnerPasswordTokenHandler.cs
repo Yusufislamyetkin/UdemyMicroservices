@@ -1,4 +1,5 @@
-﻿using FreeCourse.Web.Services.Interfaces;
+﻿using FreeCourse.Web.Exceptions;
+using FreeCourse.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -42,6 +43,7 @@ namespace FreeCourse.Web.Handler
             {
                 // Handler üzerinden yönlendirme yapılamadığında burada yetkisiz diyerek bir hata fırlatacağız. Hatayı  bir middleware'de
                 // yakalayıp bu hataya göre yönlendirme işlemi yapacağız.
+                throw new UnAuthorizeException();
             }
 
             return response;

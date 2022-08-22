@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 namespace FreeCourse.Web.Services
 {
     //Auth 2.0 yetkilendirme ile ilgili , openId ise Authentication ile ilgildir.
+    // IdentityServer'dan accestoken ve refresh token talebi. Talep neticesinde gelen token ile
+    // Giriş işleminin yapılması işlemleri bu bölüme aittir.
     public class IdentityService : IIdentityService
     {
         private readonly HttpClient _httpclient;

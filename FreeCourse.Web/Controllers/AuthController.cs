@@ -25,13 +25,17 @@ namespace FreeCourse.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn(SigninInput signinInput)
         {
+            // Apıye ye erişim işin şart olan Client Id ve Client Secret'a ilaveten password girişi yapacağımız için 
+            // SigninInput'dan gelen kullanıcı adı ve şifre verilerini Cleint ıd ve secret ile birleştirip.
+            // IdentityServera direkt olarak token için istekte bulunuyoruz. 
+
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
             var response = await _identityService.SıgnIn(signinInput);
-
+      
             if (!response.IsSuccessful)
             {
                 response.Errors.ForEach(x =>

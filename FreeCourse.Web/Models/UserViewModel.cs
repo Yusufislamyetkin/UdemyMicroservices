@@ -2,6 +2,7 @@
 
 namespace FreeCourse.Web.Models
 {
+    // View tarafında kullanıcıya gosterceğimiz viewmodel
     public class UserViewModel
     {
         public string Id { get; set; }
