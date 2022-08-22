@@ -1,8 +1,7 @@
-﻿namespace FreeCourse.Services.Catalog.Dtos
+﻿namespace FreeCourse.Web.Models.Catalogs
 {
-    public class CategoryDto
+    public class CategoryViewModel
     {
-    
         public string Id { get; set; }
         public string Name { get; set; }
     }
