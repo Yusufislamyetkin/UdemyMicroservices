@@ -22,7 +22,11 @@ namespace FreeCourse.Web.Services
 
         public async Task<UserViewModel> GetUser()
         {
+            //var response =  await _client.GetAsync("/api/user/getuser"); Test
+
+
             return await _client.GetFromJsonAsync<UserViewModel>("/api/user/getuser");
+        
         }
 
 
