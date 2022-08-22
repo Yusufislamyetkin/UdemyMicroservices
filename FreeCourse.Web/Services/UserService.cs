@@ -1,5 +1,6 @@
 ﻿using FreeCourse.Shared.Dtos;
 using FreeCourse.Web.Models;
+using FreeCourse.Web.Services.Interfaces;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FreeCourse.Web.Services
 {
-    public class UserService
+    public class UserService:IUserService
     {
 
         private readonly HttpClient _client;
