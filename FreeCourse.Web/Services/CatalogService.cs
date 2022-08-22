@@ -26,7 +26,7 @@ namespace FreeCourse.Web.Services
 
         public async Task<bool> AddCourseAsync(CourseCreateInput courseCreateInput)
         {
-            var response = await _client.PostAsJsonAsync<CourseCreateInput>("courses", courseCreateInput);
+            var response = await _client.PostAsJsonAsync<CourseCreateInput>("courses/Create", courseCreateInput);
             return response.IsSuccessStatusCode;
         }
 

@@ -1,4 +1,6 @@
-﻿namespace FreeCourse.Web.Models.Catalogs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FreeCourse.Web.Models.Catalogs
 {
     public class CourseCreateInput
     {

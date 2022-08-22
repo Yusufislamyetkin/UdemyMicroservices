@@ -31,23 +31,33 @@ namespace FreeCourse.Web
 
 
 
-            services.AddScoped<ResourceOwnerPasswordTokenHandler>();
+
             services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
 
             services.AddHttpContextAccessor();
+            services.AddAccessTokenManagement(); // ClientAccessTokenCacheye izin verir.
             services.AddScoped<ISharedIdentityService,SharedIdentityService>();
+
+            services.AddScoped<ResourceOwnerPasswordTokenHandler>();
+            services.AddScoped<ClientCredentialTokenHandler>();
 
             var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
             services.AddHttpClient<IClientCredentialTokenService,ClientCredentialTokenService>();
+         
             services.AddHttpClient<IIdentityService, IdentityService>();
+
+
+
+
+
 
             // Eðer bir catalogService' sine istek yapacaksan bu base adress üzerinden yapacaksýn diye belirtiyoruz. Delegemiz ile de adresimize giderken
             // elimiz dolu giidyoruz. (Client ýd ve secretýmýz ile oluþturduðumuz token ile)
             services.AddHttpClient<ICatalogService,CatalogService>(opt =>
             {
                 opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Catalog.Path}");
-            });
+            }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
             // Userservice IoC olurken. Delegate araya girerek token bilgisi gönderecek. Buradaký url ise direkt olarak identity Serverr url'si. 
             services.AddHttpClient<IUserService, UserService>(opt =>
@@ -55,7 +65,8 @@ namespace FreeCourse.Web
               opt.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
                
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
-          
+
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie
                 (CookieAuthenticationDefaults.AuthenticationScheme, opts =>
                 {
