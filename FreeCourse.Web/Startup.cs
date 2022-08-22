@@ -39,6 +39,7 @@ namespace FreeCourse.Web
             services.AddScoped<ISharedIdentityService,SharedIdentityService>();
 
             var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+            services.AddHttpClient<IClientCredentialTokenService,ClientCredentialTokenService>();
             services.AddHttpClient<IIdentityService, IdentityService>();
 
             // Eðer bir catalogService' sine istek yapacaksan bu base adress üzerinden yapacaksýn diye belirtiyoruz. Delegemiz ile de adresimize giderken
