@@ -26,20 +26,15 @@ namespace FreeCourse.Web.Services
 
         public async Task<bool> AddCourseAsync(CourseCreateInput courseCreateInput)
         {
-            var response = await _client.PostAsJsonAsync<CourseCreateInput>("courses")
+            var response = await _client.PostAsJsonAsync<CourseCreateInput>("courses", courseCreateInput);
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> DeleteCourseAsync(string courseId)
         {
-            var response = await _client.GetAsync($"courses/Delete/{courseId}");
+            var response = await _client.DeleteAsync($"courses/Delete/{courseId}");
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return false;
-            }
-            var responseSuccess = await response.Content.ReadFromJsonAsync<Response<CourseViewModel>>();
-
-            return responseSuccess.IsSuccessful;
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<List<CourseViewModel>> GetAllCourse()
@@ -98,9 +93,11 @@ namespace FreeCourse.Web.Services
             return responseSuccess.Data;
         }
 
-        public Task<bool> UpdateCourseAsync(CourseUpdateInput courseUpdateInput)
+        public async Task<bool> UpdateCourseAsync(CourseUpdateInput courseUpdateInput)
         {
-            throw new System.NotImplementedException();
+
+            var response = await _client.PutAsJsonAsync<CourseUpdateInput>("courses", courseUpdateInput);
+            return response.IsSuccessStatusCode;
         }
     }
 }

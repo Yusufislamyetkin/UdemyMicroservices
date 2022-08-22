@@ -5,6 +5,7 @@ using System.Text;
 
 namespace FreeCourse.Shared.Services
 {
+    // Bu yapının aynısını serviclerde direkt olarak kullanabilirsin. Her yerde ayrı ayrı yazıp almamak için direkt buradan alıyoruz.
     public class SharedIdentityService : ISharedIdentityService
     {
         private IHttpContextAccessor _httpContextAccessor;
