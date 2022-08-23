@@ -1,5 +1,6 @@
 using FreeCourse.Shared.Services;
 using FreeCourse.Web.Handler;
+using FreeCourse.Web.Helper;
 using FreeCourse.Web.Models;
 using FreeCourse.Web.Services;
 using FreeCourse.Web.Services.Interfaces;
@@ -38,6 +39,7 @@ namespace FreeCourse.Web
 
             services.AddHttpContextAccessor();
             services.AddAccessTokenManagement(); // ClientAccessTokenCacheye izin verir.
+            services.AddSingleton<PhotoHelper>();
             services.AddScoped<ISharedIdentityService,SharedIdentityService>();
 
 
