@@ -40,16 +40,16 @@ namespace FreeCourse.Web.Services
 
             var multipartContent = new MultipartFormDataContent();
 
-            multipartContent.Add(new ByteArrayContent(ms.ToArray()), "photo", randonFilename);
+            multipartContent.Add(new ByteArrayContent(ms.ToArray()), "photo", randonFilename); // Fotoğraf random isimlendirme ile eklenmeye hazır halde.
 
-            var response = await _httpClient.PostAsync("photos/PhotoSave", multipartContent);
+            var response = await _httpClient.PostAsync("photos/PhotoSave", multipartContent); // http ile post isteği yapıyoruz. httpclient!in içinde photostock gateway base addressi vardır.
 
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
 
-            var responseSuccess = await response.Content.ReadFromJsonAsync<Response<PhotoViewModel>>();
+            var responseSuccess = await response.Content.ReadFromJsonAsync<Response<PhotoViewModel>>(); 
 
             return responseSuccess.Data;
         }

@@ -23,7 +23,7 @@ namespace FreeCourse.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var ıd = _sharedIdentityService.GetUserId;
-            var value = await _catalogService.GetlAllCourseByUserIdAsync(ıd);
+            var value = await _catalogService.GetAllCourseByUserIdAsync(ıd);
 
 
             return View(value);
@@ -31,7 +31,7 @@ namespace FreeCourse.Web.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var categories = await _catalogService.GetlAllCategoryAsync();
+            var categories = await _catalogService.GetAllCategoryAsync();
             ViewBag.categoryList = new SelectList(categories, "Id", "Name");
 
 
@@ -43,7 +43,7 @@ namespace FreeCourse.Web.Controllers
         public async Task<IActionResult> Create(CourseCreateInput courseCreateInput)
         {
 
-            var categories = await _catalogService.GetlAllCategoryAsync();
+            var categories = await _catalogService.GetAllCategoryAsync();
             ViewBag.categoryList = new SelectList(categories, "Id", "Name");
 
             if (!ModelState.IsValid)
@@ -52,15 +52,15 @@ namespace FreeCourse.Web.Controllers
             }
             courseCreateInput.UserId = _sharedIdentityService.GetUserId;
 
-           var value =  await _catalogService.AddCourseAsync(courseCreateInput);
+           var value =  await _catalogService.CreateCourseAsync(courseCreateInput);
 
             return RedirectToAction(nameof(Create));
         }
 
         public async Task<IActionResult> Update(string id)
         {
-            var course = await _catalogService.GetCourseByIdAsync(id);
-            var categories = await _catalogService.GetlAllCategoryAsync();
+            var course = await _catalogService.GetByCourseId(id);
+            var categories = await _catalogService.GetAllCategoryAsync();
 
             if (course == null)
             {
@@ -86,7 +86,7 @@ namespace FreeCourse.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CourseUpdateInput courseUpdateInput)
         {
-            var categories = await _catalogService.GetlAllCategoryAsync();
+            var categories = await _catalogService.GetAllCategoryAsync();
             ViewBag.categoryList = new SelectList(categories, "Id", "Name", courseUpdateInput.Id);
             if (!ModelState.IsValid)
             {

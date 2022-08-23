@@ -68,7 +68,8 @@ namespace FreeCourse.Web
 
             services.AddHttpClient<IPhotoStockService, PhotoStockService>(opt =>
             {
-                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.PhotoStock.Path}");
+                // Bu base address IPhotoStockService servisinin her httpclient (http) isteðinde yer alacaktýr.
+                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.PhotoStock.Path}"); 
             }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
 

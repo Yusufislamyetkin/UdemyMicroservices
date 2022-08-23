@@ -1,4 +1,7 @@
-﻿namespace FreeCourse.Web.Models.Catalogs
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+
+namespace FreeCourse.Web.Models.Catalogs
 {
     public class CourseUpdateInput
     {
@@ -10,5 +13,8 @@
         public string UserId { get; set; }
         public FeatureViewModel Feature { get; set; }
         public string CategoryId { get; set; }
+
+        [Display(Name ="Kurs Resim")]
+        public IFormFile PhotoFormFile { get; set; }
     }
 }
