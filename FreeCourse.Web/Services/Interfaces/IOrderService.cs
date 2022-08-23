@@ -6,17 +6,21 @@ namespace FreeCourse.Web.Services.Interfaces
 {
     public interface IOrderService
     {
-        //Burası senkron
-        // Direkt order mikroservisine istek yapacak
-        Task<OrderCreatedViewModel> CreateOrder(CheckoutInfoInput checkoutInfoInput); // kurslar sepetten gelecek
+        /// <summary>
+        /// Senkron iletişim- direk order mikroservisine istek yapılacak
+        /// </summary>
+        /// <param name="checkoutInfoInput"></param>
+        /// <returns></returns>
+        Task<OrderCreatedViewModel> CreateOrder(CheckoutInfoInput checkoutInfoInput);
 
-        //Burası asenkron
-        // Daha order tamamlanmadı kuyruğa - rabbitMQ ' ya eklenecek.
-        Task SuspendOrder(CheckoutInfoInput checkoutInfoInput);
-        Task GetOrder(CheckoutInfoInput checkoutInfoInput);
+        /// <summary>
+        /// Asenkron iletişim- sipariş bilgileri rabbitMQ'ya gönderilecek
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        Task<OrderSuspendViewModel> SuspendOrder(CheckoutInfoInput checkoutInfoInput);
 
-        //Sipariş geçmişimi getirir.
         Task<List<OrderViewModel>> GetOrder();
-        
+
     }
 }
