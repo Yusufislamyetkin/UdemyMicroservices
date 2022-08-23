@@ -1,5 +1,5 @@
 ﻿using FreeCourse.Shared.Dtos;
-using FreeCourse.Web.Models.Input;
+using FreeCourse.Web.Models;
 using IdentityModel.Client;
 using System.Threading.Tasks;
 
