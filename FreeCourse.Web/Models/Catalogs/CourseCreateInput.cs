@@ -21,6 +21,7 @@ namespace FreeCourse.Web.Models.Catalogs
         public FeatureViewModel Feature { get; set; }
 
         [Display(Name = "Kurs kategori")]
+        [Required]
         public string CategoryId { get; set; }
 
         [Display(Name = "Kurs Resim")]

@@ -74,6 +74,23 @@ namespace FreeCourse.Web
 
 
 
+
+            services.AddHttpClient<IBasketService, BasketService>(opt =>
+            {
+                // Bu base address IPhotoStockService servisinin her httpclient (http) isteðinde yer alacaktýr.
+                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Basket.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+
+
+            services.AddHttpClient<IDiscountService, DiscountService>(opt =>
+            {
+                // Bu base address IPhotoStockService servisinin her httpclient (http) isteðinde yer alacaktýr.
+                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Discount.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+
+
             // Userservice IoC olurken. Delegate araya girerek token bilgisi gönderecek. Buradaký url ise direkt olarak identity Serverr url'si. 
             services.AddHttpClient<IUserService, UserService>(opt =>
             {
