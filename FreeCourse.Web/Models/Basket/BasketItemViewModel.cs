@@ -9,14 +9,14 @@
 
         public decimal Price { get; set; }
 
-        private decimal? DiscountAppliedPrice;
+        private decimal? DiscountAppliedPrice; //indirimli fiyat
 
-        public decimal GetCurrentPrice
+        public decimal GetCurrentPrice // indirimli fiyat yoksa normal fiyat olsun
         {
             get => DiscountAppliedPrice != null ? DiscountAppliedPrice.Value : Price;
         }
 
-        public void AppliedDiscount(decimal discountPrice)
+        public void AppliedDiscount(decimal discountPrice) // kupon uygula
         {
             DiscountAppliedPrice = discountPrice;
         }

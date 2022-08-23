@@ -1,4 +1,5 @@
 using FreeCourse.Shared.Services;
+using FreeCourse.Web.Extensions;
 using FreeCourse.Web.Handler;
 using FreeCourse.Web.Helper;
 using FreeCourse.Web.Models;
@@ -31,10 +32,9 @@ namespace FreeCourse.Web
         {
 
 
-
-
             services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
+
 
 
             services.AddHttpContextAccessor();
@@ -46,60 +46,8 @@ namespace FreeCourse.Web
             services.AddScoped<ResourceOwnerPasswordTokenHandler>();
             services.AddScoped<ClientCredentialTokenHandler>();
 
-            var serviceApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
 
-            services.AddHttpClient<IClientCredentialTokenService,ClientCredentialTokenService>();
-         
-            services.AddHttpClient<IIdentityService, IdentityService>();
-
-
-
-
-
-
-            // Eðer bir catalogService' sine istek yapacaksan bu base adress üzerinden yapacaksýn diye belirtiyoruz. Delegemiz ile de adresimize giderken
-            // elimiz dolu giidyoruz. (Client ýd ve secretýmýz ile oluþturduðumuz token ile)
-            services.AddHttpClient<ICatalogService,CatalogService>(opt =>
-            {
-                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Catalog.Path}");
-            }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
-
-
-
-            services.AddHttpClient<IPhotoStockService, PhotoStockService>(opt =>
-            {
-                // Bu base address IPhotoStockService servisinin her httpclient (http) isteðinde yer alacaktýr.
-                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.PhotoStock.Path}"); 
-            }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
-
-
-
-
-            services.AddHttpClient<IBasketService, BasketService>(opt =>
-            {
-                // Bu base address IPhotoStockService servisinin her httpclient (http) isteðinde yer alacaktýr.
-                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Basket.Path}");
-            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
-
-
-
-            services.AddHttpClient<IDiscountService, DiscountService>(opt =>
-            {
-                // Bu base address IPhotoStockService servisinin her httpclient (http) isteðinde yer alacaktýr.
-                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Discount.Path}");
-            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
-
-
-
-            // Userservice IoC olurken. Delegate araya girerek token bilgisi gönderecek. Buradaký url ise direkt olarak identity Serverr url'si. 
-            services.AddHttpClient<IUserService, UserService>(opt =>
-            {
-              opt.BaseAddress = new Uri(serviceApiSettings.IdentityBaseUri);
-               
-            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
-
-            
-
+            services.AddHttpClientServices(Configuration);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie
                 (CookieAuthenticationDefaults.AuthenticationScheme, opts =>
