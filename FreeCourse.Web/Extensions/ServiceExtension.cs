@@ -60,6 +60,14 @@ namespace FreeCourse.Web.Extensions
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
 
+            // Userservice IoC olurken. Delegate araya girerek token bilgisi gönderecek. Buradakı url ise direkt olarak identity Serverr url'si. 
+            services.AddHttpClient<IPaymentService, PaymentService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Payment.Path}");
+
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+
 
 
         }
