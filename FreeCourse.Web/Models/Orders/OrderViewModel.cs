@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FreeCourse.Web.Models.Orders
 {
-    public class OrderViewModel
+    public class OrderViewModel  // Veriyi alacağımız yer
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -13,6 +13,23 @@ namespace FreeCourse.Web.Models.Orders
         //public AddressDto AddressDto { get; set; }
         public string BuyerId { get; set; }
 
-        public List<OrderItemViewModel> orderItems;
+        public List<OrderItemViewModel> orderItems { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

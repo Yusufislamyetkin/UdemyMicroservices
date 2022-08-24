@@ -3,10 +3,12 @@ using FreeCourse.Services.Catalog.Dtos;
 using FreeCourse.Services.Catalog.Models;
 using FreeCourse.Services.Catalog.Settings;
 using FreeCourse.Shared.Dtos;
+using Mass = MassTransit;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FreeCourse.Shared.Messages;
 
 namespace FreeCourse.Services.Catalog.Services
 {
@@ -16,12 +18,15 @@ namespace FreeCourse.Services.Catalog.Services
         public readonly IMongoCollection<Course> _courseCollection;
         public readonly IMongoCollection<Category> _categoryCollection;
 
-        private readonly IMapper _mapper;
 
-        public CourseService(IMapper mapper, IDatabaseSettings databaseSettings)
+        private readonly IMapper _mapper;
+        private readonly Mass.IPublishEndpoint _publishEndpoint; // Burada provider olayı yok 
+        public CourseService(IMapper mapper, IDatabaseSettings databaseSettings, Mass.IPublishEndpoint publishEndpoint)
         {
             var client = new MongoClient(databaseSettings.ConnectionString);
             var database = client.GetDatabase(databaseSettings.DatabaseName);
+
+            _publishEndpoint = publishEndpoint;  
 
             _courseCollection = database.GetCollection<Course>(databaseSettings.CourseCollectionName);
             _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
@@ -84,7 +89,7 @@ namespace FreeCourse.Services.Catalog.Services
             return Response<Course>.Success(course, 200);
         }
 
-        public async Task<Response<NoContent>> UpdateAsync(CourseUpdateDto courseUpdateDto)
+        public async Task<Response<NoContent>> UpdateAsync(CourseUpdateDto courseUpdateDto)  // Güncelleme işlemi olduğunda event fırlatıp diğer servislere bunun bilgisini geçiyor.
         {
             var updatecourse = _mapper.Map<Course>(courseUpdateDto);
             var result = await _courseCollection.FindOneAndReplaceAsync(x => x.Id == courseUpdateDto.Id, updatecourse);
@@ -93,6 +98,11 @@ namespace FreeCourse.Services.Catalog.Services
             {
                 return Response<NoContent>.Fail("Course not found", 404);
             }
+
+            await _publishEndpoint.Publish< CourseNameChangedEvent>(new CourseNameChangedEvent
+            {
+                CourseId = updatecourse.Id, UpdatedName = courseUpdateDto.Name,
+            })
             return Response<NoContent>.Success(200);
         }
 
