@@ -1,4 +1,5 @@
 using FreeCourse.Shared.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -28,8 +29,23 @@ namespace FreeCourse.Service.FakePayment
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // rabitmq 5672 portundan ayaða kalkar default olarak
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
+                    {
+                        host.Username("guest");
+                        host.Password("guest");
+                    });
+                });
+            });
+
+            services.AddMassTransitHostedService();
+
             services.AddHttpContextAccessor();
 
             // ISharedIdentityService ile jwtde de kullanýlan sub yaný userýd kýsmýný almak için bu serviceyi kullanýyoruz.
