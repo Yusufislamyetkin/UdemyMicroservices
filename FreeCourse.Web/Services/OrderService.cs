@@ -93,9 +93,12 @@ namespace FreeCourse.Web.Services
             return response.Data;
         }
 
+        // Burası da asenktron iletişim ile ödeme kontrolü, sepet temizleme ve sipariş oluşturma işlemi
         public async Task<OrderSuspendViewModel> SuspendOrder(CheckoutInfoInput checkoutInfoInput)
         {
+            // Sepetteki ürünleri aldık 
             var basket = await _basketService.Get();
+
             var orderCreateInput = new OrderCreateInput()
             {
                 BuyerId = _sharedIdentityService.GetUserId,
