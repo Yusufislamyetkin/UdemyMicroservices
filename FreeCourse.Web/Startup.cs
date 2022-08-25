@@ -34,31 +34,31 @@ namespace FreeCourse.Web
         {
 
 
-            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
-            services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
+            //services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
+            //services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
 
 
 
-            services.AddHttpContextAccessor();
-            services.AddAccessTokenManagement(); // ClientAccessTokenCacheye izin verir.
-            services.AddSingleton<PhotoHelper>();
-            services.AddScoped<ISharedIdentityService,SharedIdentityService>();
+            //services.AddHttpContextAccessor();
+            //services.AddAccessTokenManagement(); // ClientAccessTokenCacheye izin verir.
+            //services.AddSingleton<PhotoHelper>();
+            //services.AddScoped<ISharedIdentityService,SharedIdentityService>();
 
 
-            services.AddScoped<ResourceOwnerPasswordTokenHandler>();
-            services.AddScoped<ClientCredentialTokenHandler>();
+            //services.AddScoped<ResourceOwnerPasswordTokenHandler>();
+            //services.AddScoped<ClientCredentialTokenHandler>();
 
 
-            services.AddHttpClientServices(Configuration);
+            //services.AddHttpClientServices(Configuration);
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie
-                (CookieAuthenticationDefaults.AuthenticationScheme, opts =>
-                {
-                    opts.LoginPath = "/Auth/SignIn";
-                    opts.ExpireTimeSpan = TimeSpan.FromDays(60);
-                    opts.SlidingExpiration = true;
-                    opts.Cookie.Name = "udemywebcookie";
-                });
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie
+            //    (CookieAuthenticationDefaults.AuthenticationScheme, opts =>
+            //    {
+            //        opts.LoginPath = "/Auth/SignIn";
+            //        opts.ExpireTimeSpan = TimeSpan.FromDays(60);
+            //        opts.SlidingExpiration = true;
+            //        opts.Cookie.Name = "udemywebcookie";
+            //    });
 
 
 
@@ -81,7 +81,7 @@ namespace FreeCourse.Web
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
