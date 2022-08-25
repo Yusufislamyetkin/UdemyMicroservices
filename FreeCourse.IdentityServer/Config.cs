@@ -19,7 +19,7 @@ namespace FreeCourse.IdentityServer
             new ApiResource("resource_basket"){Scopes = { "basket_fullpermission" } },
             new ApiResource("resource_discount"){Scopes = { "discount_fullpermission" } },
             new ApiResource("resource_order"){Scopes = { "order_fullpermission" } },
-            new ApiResource("resource_fakepayment"){Scopes = { "fakepayment_fullpermission" } },
+            new ApiResource("resource_fakepayment"){Scopes = { "fakepayments_fullpermission" } },
             new ApiResource("resource_gateway"){Scopes = { "gateway_fullpermission" } },
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
@@ -54,7 +54,7 @@ namespace FreeCourse.IdentityServer
 
                 new ApiScope("order_fullpermission","Order API için full erişim"),
 
-                new ApiScope("fakepayment_fullpermission","Fakepayment API için full erişim"),
+                new ApiScope("fakepayments_fullpermission","Fakepayment API için full erişim"),
 
                 new ApiScope("gateway_fullpermission","Gateway API için full erişim"),
 
@@ -91,7 +91,7 @@ namespace FreeCourse.IdentityServer
                     ClientId="TokenExhangeClient",
                     ClientSecrets= {new Secret("secret".Sha256())},
                     AllowedGrantTypes= new []{ "urn:ietf:params:oauth:grant-type:token-exchange" },
-                    AllowedScopes={ "discount_fullpermission", "fakepayment_fullpermission", IdentityServerConstants.StandardScopes.OpenId }
+                    AllowedScopes={ "discount_fullpermission", "fakepayments_fullpermission", IdentityServerConstants.StandardScopes.OpenId }
                 },
             };
     }

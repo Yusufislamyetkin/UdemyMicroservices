@@ -45,7 +45,7 @@ namespace FreeCourse.Gateway.DelegateHandler
                 GrantType = _configuration["TokenGrantType"], 
                 SubjectToken = requestToken,
                 SubjectTokenType = "urn:ietf:params:oauth:token-type:access-token",
-                Scope = "openid discount_fullpermission payment_fullpermission"
+                Scope = "openid discount_fullpermission fakepayments_fullpermission"
             };
 
             var tokenResponse = await _httpClient.RequestTokenExchangeTokenAsync(tokenExchangeTokenRequest);

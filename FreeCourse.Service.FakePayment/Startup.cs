@@ -58,15 +58,9 @@ namespace FreeCourse.Service.FakePayment
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                //Appsettings dosyasýnda yer alan ýdentityserver urlsine public key denetimi yapar.
-                options.Authority = Configuration["IdentityServerUrl"];
-                // Gelen jwt içerisinde resource_basket var mý diye check eder. Eðer varsa içeri alýr.
-                options.Audience = "resource_discount";
-                // Https i kapatýr.
+                options.Authority = Configuration["IdentityServerURL"];
+                options.Audience = "resource_fakepayment";
                 options.RequireHttpsMetadata = false;
-
-
-
             });
             // Oluþturduðumuz policy'i burada filter olarak ekliyoruz.
             services.AddControllers(opt =>
