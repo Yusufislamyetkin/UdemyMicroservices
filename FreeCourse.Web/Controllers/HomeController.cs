@@ -26,8 +26,9 @@ namespace FreeCourse.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var value = await _catalogService.GetAllCourseAsync();
-            return View(value);
+            //var value = await _catalogService.GetAllCourseAsync();
+            //return View(value);
+            return View();
         }
 
         public async Task<IActionResult> Detail(string id)
